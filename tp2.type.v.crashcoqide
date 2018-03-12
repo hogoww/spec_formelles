@@ -1,0 +1,88 @@
+Goal forall x : nat, 1 * x = x.
+intros.
+simpl.
+elim x.
+simpl.
+reflexivity.
+intros.
+simpl.
+rewrite H.
+reflexivity.
+
+
+Fixpoint f (n : nat) {struct n} : nat :=
+match n with
+0 => 1
+| S(n) =>2 * f(n)
+end.
+
+Lemma fdix :
+(f 10)=1024.
+simpl.
+reflexivity.
+
+Print list.
+Open Scope list.Check (0 :: 1 :: nil).
+
+Require Export List.
+
+Lemma rev_proof:
+forall E : Type, forall l : (list E), forall a : E, rev (l ++ a::nil)=a ::rev l.
+intros.
+elim l.
+simpl.
+reflexivity.
+intros.
+simpl.
+rewrite H.
+reflexivity.
+Qed.
+
+Lemma list_identity :
+forall (E : Type) (l : list E), l ++ nil = l.
+intros.
+elim l.
+reflexivity.
+intros.
+simpl.
+rewrite H.
+reflexivity.
+Qed.
+
+
+Lemma rev_consistence :
+forall E : Type, forall l : (list E), rev(rev l) = l.
+intros.
+elim l.
+simpl.
+reflexivity.
+intros.
+simpl.
+rewrite rev_proof.
+rewrite H.
+reflexivity.
+
+Lemma my_eq_nat_dec :
+forall n m : nat, {n = m} + {n <> m}.
+decide equality.
+(*No idea how to do that*)
+
+
+
+Inductive is_even : nat -> Prop :=
+| is_even_0 : is_even 0
+| is_even_S : forall n : nat, is_even n -> is_even (S (S n)).
+
+Lemma iseven2 : is_even 2.
+apply is_even_S.
+apply is_even_0.
+
+
+
+Ltac isEven :=
+repeat 
+match goal with
+| |- S(S n)) => apply is_even_S
+| |- 0 => apply is_even_0
+end.
+reflexivity.
