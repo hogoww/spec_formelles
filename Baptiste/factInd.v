@@ -71,8 +71,11 @@ Definition l1 := 1::2::3::nil.
 Definition l2 := 3::2::1::nil.
 
 Lemma undeuxtrois : is_perm l1 l2.
+
 unfold l1.
 unfold l2.
+
+
 apply (is_perm_transitive (1::(2::(3::nil))) ((2::(3::nil))++(1::nil)) (3::(2::(1::nil)))).
 apply is_perm_a.
 simpl.
