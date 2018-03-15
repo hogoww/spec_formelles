@@ -1,0 +1,10 @@
+Open Scope list.
+Require Export List.
+
+
+Inductive is_perm : (list nat) -> (list nat) -> Prop :=
+| is_perm_refl :forall l : (list nat), is_perm l l
+| is_perm_sym : forall l1 l2 : (list nat), is_perm l1 l2 -> is_perm l2 l1
+| is_perm_transi : forall l1 l2 l3 : (list nat), is_perm l1 l2 -> is_perm l2 l3 -> is_perm l1 l3
+| is_perm_a : forall (a : nat) (l1 l2 : (list nat)), is_perm l1 l2 -> is_perm a::l1 a::l2
+| is_perm_cons : forall (a : nat) (l : (list nat)), is_perm a::l l++a.

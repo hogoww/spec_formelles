@@ -58,21 +58,20 @@ match l with
  | a::h => (sorted_insert a (insert_sort h))
 end.
 
-Theorem insert_sort_correction : forall (l1 : (list nat)) (l2 : (list nat)),
- (insert_sort l1) = l2 -> (is_perm l1 l2)  /\ (is_sorted l2).
-Proof.
-induction l1.
-
-Theorem Insert_Sort_Sound :
-  forall (l : (list nat)) (l1 : (list nat)) ,(Sort l) = l1 -> (is_perm l l1) /\ (is_sort l1).
-Proof. 
-induction l.
-
+Theorem insert_sort_corre: 
+forall (l1 : (list nat)) (l2 : (list nat)),(insert_sort l1) = l2 -> (is_perm l1 l2)  /\ (is_sorted l2).
+induction l3.
+simpl.
 intro.
 
 intro.
-intro.
+rewrite <- H.
 split.
+apply is_perm_refl.
+apply is_sorted_nil.
 
+simpl.
+intro.
+rewrite 
 
 reflexivity.
