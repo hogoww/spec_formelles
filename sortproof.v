@@ -58,20 +58,45 @@ match l with
  | a::h => (sorted_insert a (insert_sort h))
 end.
 
-Theorem insert_sort_corre: 
-forall (l1 : (list nat)) (l2 : (list nat)),(insert_sort l1) = l2 -> (is_perm l1 l2)  /\ (is_sorted l2).
-induction l3.
-simpl.
-intro.
 
+Functional Scheme insert_sort_ind := Induction for insert_sort Sort Prop.
+
+Theorem insert_sort_correction: 
+forall (l1 : (list nat)) (l2 : (list nat)),(insert_sort l1) = l2 -> (is_perm l1 l2)  /\ (is_sorted l2).
 intro.
+functional induction (insert_sort l3) using insert_sort_ind.
+
+
+
+
+intros.
+
+simpl.
+
 rewrite <- H.
 split.
 apply is_perm_refl.
 apply is_sorted_nil.
 
-simpl.
 intro.
-rewrite 
+intro.
 
-reflexivity.
+rewrite <- H. 
+
+split.
+rewrite <-H.
+simpl.
+apply <- H.
+
+
+Functional Scheme even_ind := Induction for even Sort Prop.
+
+Theorem even_sound :
+ forall (n : nat) (v : Prop) , (even n) = True -> is_even n.
+Proof.
+  do 2 intro.
+  functional induction (even n) using even_ind; intros.
+  apply is_even_O.
+  elimtype False; rewrite H; auto.
+  apply is_even_S; apply IHP; assumption.
+Qed.
