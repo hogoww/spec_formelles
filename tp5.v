@@ -46,5 +46,19 @@ Inductive is_map (f : nat -> nat) : (list nat) -> (list nat) -> Prop :=
                  is_map f l1 l2 ->
                  is_map f (a::l1) ((f a)::l2).
 
-Lemma map : (f : nat -> nat) (l1 : (list nat)), {}
+Lemma map :forall (f : nat -> nat)(l1 : list nat) , { l2 : list nat | is_map f l1 l2 }.
+induction l1.
+exists nil.
+apply is_map_nil.
+
+elim IHl1.
+intros.
+exists ((f a)::x).
+apply is_map_rec.
+apply p.
+
+Ltac add 
+
+
+
 
