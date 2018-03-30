@@ -56,9 +56,14 @@ intros.
 exists ((f a)::x).
 apply is_map_rec.
 apply p.
+Defined.
 
-Ltac add 
-
+(*
+Fixpoint add (n : nat) :  nat :=
+match n with
+| n => (S n)
+end.
+*)
 
 
 

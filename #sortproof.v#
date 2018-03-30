@@ -84,6 +84,28 @@ rewrite <- H.
 is_per
 *)
 
+(*
+Theorem is_perm_insert : 
+forall (a : nat) (l : (list nat)), is_perm (a::l) (sorted_insert a l).
+intros.
+induction l.
+simpl.
+apply is_perm_cons.
+apply is_perm_refl.
+simpl.
+*)
+
+
+Theorem is_sorted_insert :
+forall (a : nat) (l : (list nat)), is_sorted l -> is_sorted (sorted_insert a l).
+intros.
+induction l.
+simpl.
+apply is_sorted_base.
+simpl.
+apply (le_dec a a0).
+apply is_sorted_rec.
+*)
 
 
 
@@ -104,7 +126,13 @@ elim (IHl3 (insert_sort l3)).
 intros.
 
 simpl.
-split.elim_perm_transi (is_perm (a::l3), a::(insert_sort(l3))) (a::(insert_sort l3)) (is_perm a::(insert_sort l3) (sorted_insert a l3))).
+split.
+(*
+elim_perm_transi (is_perm (a::l3), a::(insert_sort(l3))) (a::(insert_sort l3))(is_perm a::(insert_sort l3) (sorted_insert a l3))).
+*)
+Focus 2.
+rewrite (H1 (insert_sort l3)).
+
 intro.
 induction l3.
 

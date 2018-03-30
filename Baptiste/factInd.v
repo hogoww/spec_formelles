@@ -57,6 +57,7 @@ Proof.
   reflexivity.
 Qed.
 
+
 (* TRI PAR INSERTION *)
 
 Inductive is_perm : (list nat) -> (list nat) -> Prop := 
@@ -71,11 +72,8 @@ Definition l1 := 1::2::3::nil.
 Definition l2 := 3::2::1::nil.
 
 Lemma undeuxtrois : is_perm l1 l2.
-
 unfold l1.
 unfold l2.
-
-
 apply (is_perm_transitive (1::(2::(3::nil))) ((2::(3::nil))++(1::nil)) (3::(2::(1::nil)))).
 apply is_perm_a.
 simpl.
@@ -121,6 +119,61 @@ Fixpoint Sort (l : (list nat)) : (list nat) :=
 end.
 
 
+(* Theorème intermediaire 1 -- Il sert à prouver le theoreme intermediaire 2 *)
+
+Theorem inter1 : forall (a1 : nat) (a2 : nat) (l : (list nat)) , (is_perm (a1 :: a2 :: l) (a2 :: a1 :: l)).
+Proof.
+intro.
+intro.
+intro.
+apply (is_perm_transitive  (a1 :: a2 :: l) ( a2 :: l ++ a1::nil ) (a2 :: a1 :: l)).
+apply is_perm_a.
+apply is_perm_cons.
+apply is_perm_sym.
+apply is_perm_a.
+Qed.
+
+
+
+(* Theoreme intermédiaire 2 *)
+Theorem is_perm_insert :
+forall (a : nat)  (l : (list nat)) , (is_perm (a::l) (Insert a l)).
+Proof.
+induction l;
+simpl.
+apply is_perm_a.
+elim (le_dec a a0).
+intros.
+apply is_perm_refl.
+intros.
+apply (is_perm_transitive (a :: a0 :: l) (a0 :: a :: l) (a0 :: Insert a l)).
+apply inter1.
+apply is_perm_cons.
+apply IHl.
+Qed.
+
+
+(* Theoreme intermédiaire 3 *)
+Theorem is_sort_cons :
+forall ( a : nat) (l : (list nat)) , (is_sort l) -> (is_sort (Insert a l)).
+Proof.
+induction l.
+simpl.
+intros.
+apply is_sort_1.
+intros.
+simpl.
+elim (le_dec a a0).
+intros.
+apply is_sort_N.
+apply a1.
+apply H.
+intros.
+
+
+
+
+
 Theorem Insert_Sort_Sound :
   forall (l : (list nat)) (l1 : (list nat)) ,(Sort l) = l1 -> (is_perm l l1) /\ (is_sort l1).
 Proof. 
@@ -133,9 +186,14 @@ apply is_perm_refl.
 simpl in H.
 rewrite <- H.
 apply is_sort_0.
-
-
-
+split.
+rewrite <- H.
+simpl.
+apply (is_perm_transitive (a::l)  (a:: (Sort l)) (Insert a (Sort l))).
+apply is_perm_cons.
+apply IHl.
+reflexivity.
+apply is_perm_insert.
 
 
 
